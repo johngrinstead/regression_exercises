@@ -7,6 +7,8 @@ import seaborn as sns
 import numpy as np
 import env
 
+from sklearn.model_selection import train_test_split
+
 
 def get_connection(db, user=env.user, host=env.host, password=env.password):
     return f'mysql+pymysql://{user}:{password}@{host}/{db}'
@@ -35,10 +37,22 @@ def wrangle_telco():
     
     df = data.drop(columns='Unnamed: 0', inplace=True)
     
-    df = data.drop(columns='customer_id', inplace=True)
-    
-    
-    
     return data
+
+
+def split(df, stratify_by=None):
+    """
+    Crude train, validate, test split
+    To stratify, send in a column name
+    """
+    
+    if stratify_by == None:
+        train, test = train_test_split(df, test_size=.2, random_state=319)
+        train, validate = train_test_split(train, test_size=.3, random_state=319)
+    else:
+        train, test = train_test_split(df, test_size=.2, random_state=319, stratify=df[stratify_by])
+        train, validate = train_test_split(train, test_size=.3, random_state=319, stratify=train[stratify_by])
+    
+    return train, validate, test
 
 
