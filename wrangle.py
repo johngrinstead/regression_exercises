@@ -26,6 +26,8 @@ where contract_type_id = 3;
 def wrangle_telco():
     data = pd.read_csv("wrangle_telco.csv")
     
+    data = data.set_index("customer_id")
+    
     data['total_charges'].replace(r'^\s*$', np.nan, regex=True, inplace=True)
     # replace white space objects with NaN
     
@@ -34,9 +36,7 @@ def wrangle_telco():
     
     data.total_charges = data.total_charges.astype('float')
     # converts total_charges from object to float
-    
-    df = data.drop(columns='Unnamed: 0', inplace=True)
-    
+        
     return data
 
 
