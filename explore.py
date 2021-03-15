@@ -14,7 +14,7 @@ def plot_variable_pairs(df):
     pairplot = sns.pairplot(df, kind = 'reg', height=3)
     # creates a pairplot that includes a regression line
     
-    correlation = train.corr()
+    correlation = df.corr()
     # makes a readable correlation report
     
     return pairplot, correlation
@@ -26,3 +26,23 @@ def months_to_years(df):
     return df
 
 
+def plot_categorical_and_continuous_vars(df, cat_vars, quant_vars, target_var):
+    plot_cat(df, cat_vars)
+    
+    plot_quant(df, quant_vars)
+    
+    
+def plot_cat(df, cat_vars):
+    for col in list(df.columns):
+        if col in cat_vars:
+            sns.distplot(df[col])
+            plt.show()
+            
+            
+def plot_quant(df, quant_vars):
+    for col in list(df.columns):
+        if col in quant_vars:
+            sns.boxplot(data = df, y = col)
+            plt.show()
+            
+            
